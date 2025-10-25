@@ -1,9 +1,9 @@
-import { Text, View, Button } from "react-native";
+import { View } from "react-native";
 import { router } from "expo-router";
-import { fontFamily } from "@/theme/fontFamily";
 import { HomeHeader } from "@/components/HomeHeader";
 import { Target } from "@/components/Target";
 import { List } from "@/components/List";
+import { Button } from "@/components/Button";
 
 const summary = {
   total: "R$ 2.680,00",
@@ -43,10 +43,18 @@ export default function Index() {
         title="Target"
         data={targets}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Target data={item} />}
+        renderItem={({ item }) => (
+          <Target
+            data={item}
+            onPress={() => router.navigate(`/in-progress/${item.id}`)}
+          />
+        )}
         emptyMessage="No targets. Touch on new target to create"
         containerStyle={{ paddingHorizontal: 24 }}
       />
+      <View style={{ padding: 24, paddingBottom: 32 }}>
+        <Button title="New target" onPress={() => router.navigate("/target")} />
+      </View>
     </View>
   );
 }
