@@ -2,6 +2,8 @@ import { Text, View, Button } from "react-native";
 import { router } from "expo-router";
 import { fontFamily } from "@/theme/fontFamily";
 import { HomeHeader } from "@/components/HomeHeader";
+import { Target } from "@/components/Target";
+import { List } from "@/components/List";
 
 const summary = {
   total: "R$ 2.680,00",
@@ -9,10 +11,42 @@ const summary = {
   outcomes: { label: "Outcomes", value: "R$ 884,90" },
 };
 
+const targets = [
+  {
+    id: "1",
+    name: "Apple Watch",
+    current: "R$ 580,00",
+    percentage: "50%",
+    target: "R$ 1.700,00",
+  },
+  {
+    id: "2",
+    name: "Buy an ergonomic chair",
+    current: "R$ 900,00",
+    percentage: "75%",
+    target: "R$ 1.200,00",
+  },
+  {
+    id: "3",
+    name: "Trip to United States",
+    current: "R$ 9.500,00",
+    percentage: "48%",
+    target: "R$ 20.000,00",
+  },
+];
+
 export default function Index() {
   return (
     <View style={{ flex: 1 }}>
       <HomeHeader data={summary} />
+      <List
+        title="Target"
+        data={targets}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <Target data={item} />}
+        emptyMessage="No targets. Touch on new target to create"
+        containerStyle={{ paddingHorizontal: 24 }}
+      />
     </View>
   );
 }
