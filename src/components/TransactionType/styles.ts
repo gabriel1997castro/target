@@ -20,6 +20,6 @@ export const styles = StyleSheet.create({
   title: {
     fontFamily: fontFamily.medium,
     fontSize: 14,
-    color: colors.gray.500
+    color: colors.gray[500],
   },
 });
