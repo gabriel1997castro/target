@@ -7,7 +7,7 @@ import { router } from "expo-router";
 
 type Props = {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   rightButton?: {
     onPress: () => void;
     icon: keyof typeof MaterialIcons.glyphMap;
@@ -21,17 +21,16 @@ export function PageHeader({ title, subtitle, rightButton }: Props) {
         <TouchableOpacity activeOpacity={0.8} onPress={() => router.back()}>
           <MaterialIcons name="arrow-back" size={32} color={colors.black} />
         </TouchableOpacity>
-      
 
-      {rightButton && (
-        <TouchableOpacity onPress={rightButton.onPress}>
-          <MaterialIcons
-            name={rightButton.icon}
-            size={24}
-            color={colors.gray[500]}
-          />
-        </TouchableOpacity>
-      )}
+        {rightButton && (
+          <TouchableOpacity onPress={rightButton.onPress}>
+            <MaterialIcons
+              name={rightButton.icon}
+              size={24}
+              color={colors.gray[500]}
+            />
+          </TouchableOpacity>
+        )}
       </View>
 
       <Text style={styles.title}>{title}</Text>

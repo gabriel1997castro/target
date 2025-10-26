@@ -1,15 +1,22 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { PageHeader } from "@/components/PageHeader";
+import { Progress } from "@/components/Progress";
+import { useLocalSearchParams } from "expo-router";
 import React from "react";
-import { Text, View, Button } from "react-native";
+import { View } from "react-native";
+
+const details = { current: "$112", target: "$480", percentage: 25 };
 
 export default function InProgress() {
   const params = useLocalSearchParams<{ id: string }>();
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>In Progress: {params.id}</Text>
+    <View style={{ flex: 1, padding: 24, gap: 32 }}>
+      <PageHeader
+        title="Apple Watch"
+        rightButton={{ icon: "edit", onPress: () => {} }}
+      />
 
-      <Button title="Back" onPress={() => router.back()} />
+      <Progress data={details} />
     </View>
   );
 }
