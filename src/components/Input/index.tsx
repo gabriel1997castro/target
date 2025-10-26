@@ -7,7 +7,7 @@ type Props = TextInputProps & {
   label: string;
 };
 
-export function Input({ label, ...rest }) {
+export function Input({ label, ...rest }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
