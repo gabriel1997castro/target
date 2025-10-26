@@ -13,12 +13,13 @@
       }
     },
     "ios": {
-      "bundleIdentifier": "com.gabrielc.target",
+      "bundleIdentifier": "com.gabrielgcastro.target",
       "icon": "./assets/ios-icon.png"
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      "expo-sqlite"
     ]
   }
 }
