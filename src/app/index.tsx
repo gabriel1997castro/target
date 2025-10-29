@@ -6,6 +6,7 @@ import { Target, TargetProps } from "@/components/Target";
 import { List } from "@/components/List";
 import { Button } from "@/components/Button";
 import { useTargetDatabase } from "@/database/useTargetDatabase";
+import { Loading } from "@/components/Loading";
 
 const summary = {
   total: "R$ 2.680,00",
@@ -14,6 +15,7 @@ const summary = {
 };
 
 export default function Index() {
+  const [isFetching, setIsFetching] = useState(true);
   const [targets, setTargets] = useState<TargetProps[]>();
   const targetDatabase = useTargetDatabase();
 
@@ -40,6 +42,7 @@ export default function Index() {
     const [targetData] = await Promise.all([targetDataPromise]);
 
     setTargets(targetData);
+    setIsFetching(false);
   }
 
   useFocusEffect(
@@ -47,6 +50,8 @@ export default function Index() {
       fetchData();
     }, [])
   );
+
+  if (isFetching) return <Loading />;
 
   return (
     <View style={{ flex: 1 }}>
