@@ -7,28 +7,14 @@ import { Progress } from "@/components/Progress";
 import { List } from "@/components/List";
 import { Button } from "@/components/Button";
 import { Transaction, TransactionProps } from "@/components/Transaction";
+import { Loading } from "@/components/Loading";
 
 import { TransactionTypes } from "@/utils/TransactionTypes";
 import { numberToCurrency } from "@/utils/numberToCurrency";
 
 import { useTargetDatabase } from "@/database/useTargetDatabase";
-import { Loading } from "@/components/Loading";
-
-const transactions: TransactionProps[] = [
-  {
-    id: "1",
-    value: "$20,00",
-    date: "12/04/25",
-    type: TransactionTypes.Outcome,
-  },
-  {
-    id: "2",
-    value: "$300,00",
-    date: "12/04/25",
-    description: "CDB 110% Nubank",
-    type: TransactionTypes.Income,
-  },
-];
+import { useTransactionsDatabase } from "@/database/useTransactionDatabase";
+import dayjs from "dayjs";
 
 export default function InProgress() {
   const [isFetching, setIsFetching] = useState(true);
@@ -38,12 +24,14 @@ export default function InProgress() {
     target: "$ 0.00",
     percentage: 0,
   });
+  const [transactions, setTransactions] = useState<TransactionProps[]>([]);
 
   const params = useLocalSearchParams<{ id: string }>();
 
   const targetDatabase = useTargetDatabase();
+  const transactionsDatabase = useTransactionsDatabase();
 
-  async function fetchDetails() {
+  async function fetchTargetDetails() {
     try {
       const response = await targetDatabase.show(Number(params.id));
       setDetails({
@@ -58,10 +46,35 @@ export default function InProgress() {
     }
   }
 
-  async function fetchData() {
-    const fetchDetailsPromise = fetchDetails();
+  async function fetchTransactions() {
+    try {
+      const response = await transactionsDatabase.listByTargetId(
+        Number(params.id)
+      );
 
-    await Promise.all([fetchDetailsPromise]);
+      setTransactions(
+        response.map((transaction) => ({
+          id: String(transaction.id),
+          value: numberToCurrency(transaction.amount),
+          date: dayjs(transaction.created_at).format("MM/DD/YYYY [,] hh:mm"),
+          description: transaction.description,
+          type:
+            transaction.amount >= 0
+              ? TransactionTypes.Income
+              : TransactionTypes.Outcome,
+        }))
+      );
+    } catch (error) {
+      Alert.alert("It was not possible to load transactions");
+      console.log(error);
+    }
+  }
+
+  async function fetchData() {
+    const fetchTargetDetailsPromise = fetchTargetDetails();
+    const fetchTransactionsPromise = fetchTransactions();
+
+    await Promise.all([fetchTargetDetailsPromise, fetchTransactionsPromise]);
 
     setIsFetching(false);
   }
