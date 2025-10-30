@@ -73,6 +73,35 @@ export default function Target() {
     }
   }
 
+  function handleRemove() {
+    if (!params.id) return;
+
+    Alert.alert("Remove", "Do you really want to remove?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Yes",
+        onPress: remove,
+      },
+    ]);
+  }
+
+  async function remove() {
+    try {
+      setIsProcessing(true);
+      await targetDatabase.remove(Number(params.id));
+
+      Alert.alert("Removed", "Target removed!", [
+        { text: "Ok", onPress: () => router.replace("/") },
+      ]);
+    } catch (error) {
+      Alert.alert("Error", "It was not possible to remove the target");
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     if (params.id) {
       fetchDetails(Number(params.id));
@@ -84,6 +113,9 @@ export default function Target() {
       <PageHeader
         title="Target"
         subtitle="Save money to reach your financial goal"
+        rightButton={
+          params.id ? { icon: "delete", onPress: handleRemove } : undefined
+        }
       />
 
       <View style={{ marginTop: 32, gap: 24 }}>
