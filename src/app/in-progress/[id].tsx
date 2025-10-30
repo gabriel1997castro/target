@@ -53,7 +53,7 @@ export default function InProgress() {
         percentage: response.percentage,
       });
     } catch (error) {
-      Alert.alert("Error", "Couldn't load the target details");
+      Alert.alert("Error", "It was not possible to fetch the target details");
       console.log(error);
     }
   }
@@ -78,7 +78,10 @@ export default function InProgress() {
     <View style={{ flex: 1, padding: 24, gap: 32 }}>
       <PageHeader
         title={details.name}
-        rightButton={{ icon: "edit", onPress: () => {} }}
+        rightButton={{
+          icon: "edit",
+          onPress: () => router.navigate(`/target?id=${params.id}`),
+        }}
       />
 
       <Progress data={details} />

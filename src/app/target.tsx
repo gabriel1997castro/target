@@ -3,7 +3,7 @@ import { Input } from "@/components/Input/index";
 import { PageHeader } from "@/components/PageHeader";
 import { Alert, View } from "react-native";
 import { CurrencyInput } from "@/components/CurrencyInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { useTargetDatabase } from "@/database/useTargetDatabase";
 
@@ -24,9 +24,25 @@ export default function Target() {
     setIsProcessing(true);
 
     if (params.id) {
-      // update
+      update();
     } else {
       create();
+    }
+  }
+
+  async function update() {
+    try {
+      await targetDatabase.update({ id: Number(params.id), name, amount });
+      Alert.alert("Success!", "Target updated successfully!", [
+        {
+          text: "Ok",
+          onPress: () => router.back(),
+        },
+      ]);
+    } catch (error) {
+      Alert.alert("Error", "It was not possible to update the target");
+      console.log(error);
+      setIsProcessing(false);
     }
   }
 
@@ -45,6 +61,23 @@ export default function Target() {
       setIsProcessing(false);
     }
   }
+
+  async function fetchDetails(id: number) {
+    try {
+      const response = await targetDatabase.show(id);
+      setName(response.name);
+      setAmount(response.amount);
+    } catch (error) {
+      Alert.alert("Error", "It was not possible to fetch the target details");
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    if (params.id) {
+      fetchDetails(Number(params.id));
+    }
+  }, [params.id]);
 
   return (
     <View style={{ flex: 1, padding: 24 }}>
