@@ -79,6 +79,24 @@ export default function InProgress() {
     setIsFetching(false);
   }
 
+  async function handleRemoveTransaction(id: string) {
+    Alert.alert("Remove transaction", "Do you really want to remove?", [
+      { text: "No", style: "cancel" },
+      { text: "Yes", onPress: () => removeTransaction(id) },
+    ]);
+  }
+
+  async function removeTransaction(id: string) {
+    try {
+      await transactionsDatabase.remove(Number(id));
+      fetchData();
+      Alert.alert("Removed", "Transaction removed successfully!");
+    } catch (error) {
+      Alert.alert("Error", "It was not possible to remove the transaction");
+      console.log(error);
+    }
+  }
+
   useFocusEffect(
     useCallback(() => {
       fetchData();
@@ -103,7 +121,10 @@ export default function InProgress() {
         title="Transactions"
         data={transactions}
         renderItem={({ item }) => (
-          <Transaction data={item} onRemove={() => {}} />
+          <Transaction
+            data={item}
+            onRemove={() => handleRemoveTransaction(item.id)}
+          />
         )}
         emptyMessage="No Transactions. Touch in new transaction to add your money here"
       />
