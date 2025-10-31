@@ -7,8 +7,8 @@ import { Summary, SummaryProps } from "../Summary";
 
 export type HomeHeaderProps = {
   total: string;
-  incomes: SummaryProps;
-  outcomes: SummaryProps;
+  income: SummaryProps;
+  outcome: SummaryProps;
 };
 
 type Props = {
@@ -30,12 +30,12 @@ export function HomeHeader({ data }: Props) {
 
       <View style={styles.summary}>
         <Summary
-          data={data.incomes}
+          data={data.income}
           icon={{ name: "arrow-upward", color: colors.green[500] }}
         />
 
         <Summary
-          data={data.outcomes}
+          data={data.outcome}
           icon={{ name: "arrow-downward", color: colors.red[400] }}
           isRight
         />
