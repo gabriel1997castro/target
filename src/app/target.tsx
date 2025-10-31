@@ -1,10 +1,12 @@
+import { useEffect, useState } from "react";
+import { Alert, StatusBar, View } from "react-native";
+
+import { router, useLocalSearchParams } from "expo-router";
+
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input/index";
 import { PageHeader } from "@/components/PageHeader";
-import { Alert, View } from "react-native";
 import { CurrencyInput } from "@/components/CurrencyInput";
-import { useEffect, useState } from "react";
-import { router, useLocalSearchParams } from "expo-router";
 import { useTargetDatabase } from "@/database/useTargetDatabase";
 
 export default function Target() {
@@ -110,6 +112,7 @@ export default function Target() {
 
   return (
     <View style={{ flex: 1, padding: 24 }}>
+      <StatusBar barStyle="dark-content" />
       <PageHeader
         title="Target"
         subtitle="Save money to reach your financial goal"

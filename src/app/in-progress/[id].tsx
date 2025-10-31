@@ -1,6 +1,7 @@
-import { Alert, View } from "react-native";
+import { Alert, StatusBar, View } from "react-native";
 import React, { useCallback, useState } from "react";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
+import dayjs from "dayjs";
 
 import { PageHeader } from "@/components/PageHeader";
 import { Progress } from "@/components/Progress";
@@ -14,7 +15,6 @@ import { numberToCurrency } from "@/utils/numberToCurrency";
 
 import { useTargetDatabase } from "@/database/useTargetDatabase";
 import { useTransactionsDatabase } from "@/database/useTransactionDatabase";
-import dayjs from "dayjs";
 
 export default function InProgress() {
   const [isFetching, setIsFetching] = useState(true);
@@ -107,6 +107,7 @@ export default function InProgress() {
 
   return (
     <View style={{ flex: 1, padding: 24, gap: 32 }}>
+      <StatusBar barStyle="dark-content" />
       <PageHeader
         title={details.name}
         rightButton={{
